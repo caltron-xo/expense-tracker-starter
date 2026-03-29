@@ -16,16 +16,24 @@ No test suite is configured.
 
 ## Architecture
 
-This is a single-file React app — all logic lives in `src/App.jsx` with styles in `src/App.css`. There are no separate components, hooks, or utilities yet.
+The app is composed of four components with styles in `src/App.css`. Transactions are not persisted; they reset on page reload.
 
-**State in App.jsx:**
-- `transactions` — array of `{ id, description, amount, type, category, date }`. Note: `amount` is stored as a string (not a number), which causes a known bug in the income/expense/balance calculations — `reduce` concatenates strings instead of summing.
-- Form state: `description`, `amount`, `type`, `category`
-- Filter state: `filterType`, `filterCategory`
+**Component tree:**
 
-**Data flow:** All filtering and summary calculations (totalIncome, totalExpenses, balance) are derived inline from `transactions` on each render — no memoization. Transactions are not persisted; they reset on page reload.
+```
+App
+├── Summary
+├── TransactionForm
+└── TransactionList
+```
 
-**Known intentional issues (part of the course):**
-- `amount` stored as string → broken totals in summary cards
+**State ownership:**
+
+- `App` — owns `transactions` (array of `{ id, description, amount, type, category, date }`) and passes it down. `amount` is a number.
+- `Summary` — receives `transactions`, derives `totalIncome`, `totalExpenses`, and `balance` internally.
+- `TransactionForm` — owns its own form state (`description`, `amount`, `type`, `category`); calls `onAdd(transaction)` prop on submit.
+- `TransactionList` — receives `transactions`; owns `filterType` and `filterCategory` state internally.
+
+**Known intentional issue (part of the course):**
+
 - "Freelance Work" seed transaction is typed as `expense` instead of `income`
-- UI and code organization are intentionally rough
