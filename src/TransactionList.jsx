@@ -5,8 +5,9 @@ const categories = ['food', 'housing', 'utilities', 'transport', 'entertainment'
 function TransactionList({ transactions, onDelete }) {
   const [filterType, setFilterType] = useState('all');
   const [filterCategory, setFilterCategory] = useState('all');
+  const safeTransactions = transactions || [];
 
-  let filteredTransactions = transactions;
+  let filteredTransactions = safeTransactions;
   if (filterType !== 'all') {
     filteredTransactions = filteredTransactions.filter((t) => t.type === filterType);
   }
@@ -59,8 +60,7 @@ function TransactionList({ transactions, onDelete }) {
                     if (window.confirm('Are you sure you want to delete this transaction?')) {
                       onDelete(t.id);
                     }
-                  }}
-                >
+                  }}>
                   Delete
                 </button>
               </td>

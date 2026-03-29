@@ -1,6 +1,7 @@
-function Summary({ transactions }) {
-  const totalIncome = transactions.filter((t) => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
-  const totalExpenses = transactions.filter((t) => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+function Summary({ transactions = [] }) {
+  const safeTransactions = transactions || [];
+  const totalIncome = safeTransactions.filter((t) => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+  const totalExpenses = safeTransactions.filter((t) => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
   const balance = totalIncome - totalExpenses;
 
   return (

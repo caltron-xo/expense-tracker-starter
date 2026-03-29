@@ -7,18 +7,20 @@ function TransactionForm({ onAdd }) {
   const [amount, setAmount] = useState('');
   const [type, setType] = useState('expense');
   const [category, setCategory] = useState('food');
+  const [date] = useState(new Date().toLocaleDateString('en-CA'));
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!description || !amount) return;
+    const parsedAmount = parseFloat(amount);
+    if (!description || !amount || !Number.isFinite(parsedAmount) || parsedAmount === 0) return;
 
     onAdd({
       id: Date.now(),
       description,
-      amount: parseFloat(amount),
+      amount: parsedAmount,
       type,
       category,
-      date: new Date().toISOString().split('T')[0],
+      date,
     });
 
     setDescription('');
@@ -31,12 +33,7 @@ function TransactionForm({ onAdd }) {
     <div className='add-transaction'>
       <h2>Add Transaction</h2>
       <form onSubmit={handleSubmit}>
-        <input
-          type='text'
-          placeholder='Description'
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
+        <input type='text' placeholder='Description' value={description} onChange={(e) => setDescription(e.target.value)} />
         <input type='number' placeholder='Amount' value={amount} onChange={(e) => setAmount(e.target.value)} />
         <select value={type} onChange={(e) => setType(e.target.value)}>
           <option value='income'>Income</option>
