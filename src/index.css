@@ -5,7 +5,13 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #ffffff;
-  color: #333;
+  font-family:
+    'Inter',
+    'Segoe UI',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  background: #0f0f13;
+  color: #e2e8f0;
+  min-height: 100vh;
 }
